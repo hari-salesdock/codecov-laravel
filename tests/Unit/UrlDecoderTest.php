@@ -7,9 +7,23 @@ use PHPUnit\Framework\TestCase;
 
 class UrlDecoderTest extends TestCase
 {
-    public function testGetHost(): void
+    public function getHostProvider(): array
     {
-        $decoder = new UrlDecoder('https://example.com');
-        $this->assertEquals('example.com', $decoder->getHost());
+        return [
+            ['https://example.com', 'example.com'],
+            ['not-url', null],
+        ];
     }
+
+    /**
+     * @dataProvider getHostProvider
+     */
+
+    public function testGetHost(string $url, ?string $expectedHost): void
+    {
+        $decoder = new UrlDecoder($url);
+        $this->assertEquals($expectedHost, $decoder->getHost());
+    }
+
+
 }
